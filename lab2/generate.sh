@@ -9,6 +9,6 @@ p4testgen \
     --stop-metric MAX_STATEMENT_COVERAGE \
     --max-tests 0 \
     --print-coverage \
-    --path-selection GREEDY_STATEMENT_COVERAGE \
+    --path-selection GREEDY_STATEMENT_SEARCH \
     --out-dir tests \
     mystery.p4

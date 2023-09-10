@@ -12,8 +12,8 @@ cp $@ mystery.stf
     mystery.p4
 if [ $? -eq 0 ]
 then
-    echo -e "\033[32m\033[1mPassed\033[0m"
+    echo -e "[\033[32m\033[1mPassed\033[0m] $FILE"
 else
-    echo -e "\033[31m\033[1mFailed\033[0m"
+    echo -e "[\033[31m\033[1mFailed\033[0m] $FILE"
 fi
 rm mystery.stf

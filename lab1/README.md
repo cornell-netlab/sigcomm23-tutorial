@@ -219,3 +219,13 @@ corresponding test file. For example:
 * Pay attention to the packet metdata and the validity of headers, and
   keep in mind that all packet modifications are performed at the
   _end_ of the pipeline. 
+
+* Note that if you run the tests on the starter code, you may see
+  errors of the form:
+  ```
+  Exception: Could not find table MyIngress.route.ipv4Route
+  ```
+  This is expected: because they are not invoked, they are dead code,
+  and the compiler removes them. After you fill in all of the `TODO`s,
+  you will not see this particular error, although of course the tests
+  may still fail.

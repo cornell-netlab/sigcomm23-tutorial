@@ -11,4 +11,3 @@ cp $@ reference.stf
     /p4c \
     reference.p4
 rm reference.stf
-fi

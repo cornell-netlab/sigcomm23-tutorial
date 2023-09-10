@@ -47,7 +47,7 @@ control Validate (
 
 /* `Route` determines the output port for IPv4 and IPv6 packets and
  * populates the user-defined metadata with the corresponding packet
- * modifications.
+ * modifications. It also performs tunnel decapsulation.
  */
 control Route (
     inout headers_t headers,

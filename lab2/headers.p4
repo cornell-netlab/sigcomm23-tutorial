@@ -78,6 +78,5 @@ struct metadata_t {
     bit<16> l4SrcPort;
     bit<16> l4DstPort;
     bit<48> newDstAddr;
-    bit<8>  newTtl;
     bit<9>  egressPort;
 }

@@ -53,7 +53,7 @@ values extracted from packet data (e.g., `l3Protocol`, `l4SrcPort`,
 `l4DstPort`, etc.), and values for the final packet at the end of the
 pipeline (e.g., `newDstAddr` and `egressPort`):
 
-```
+```p4
 struct metadata_t {
     bool    validated;
     bool    decap;

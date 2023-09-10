@@ -32,6 +32,42 @@ The pipeline supports packets (a subset of) the following headers:
 * UDP
 * "Inner" IPv4, for 4-in-6 tunneling
 
+```p4
+struct headers_t {
+    ethernet_t ethernet;
+    vlan_t     vlan;
+    ipv4_t     ipv4;
+    ipv6_t     ipv6;
+    ipv4_t     innerIpv4;
+    tcp_t      tcp;
+    udp_t      udp;
+}
+```
+
+## Metadata
+
+The user-defined metadata contains various information used for packet
+processing including: values to indicate which processing should be
+performed (e.g., `decap, `rewrite`, `forward`, etc.), normalized
+values extracted from packet data (e.g., `l3Protocol`, `l4SrcPort`,
+`l4DstPort`, etc.), and values for the final packet at the end of the
+pipeline (e.g., `newDstAddr` and `egressPort`):
+
+```
+struct metadata_t {
+    bool    validated;
+    bool    decap;
+    bool    rewrite;
+    bool    forward;
+    bit<12> vlan;
+    bit<8>  l3Protocol;
+    bit<16> l4SrcPort;
+    bit<16> l4DstPort;
+    bit<48> newDstAddr;
+    bit<8>  newTtl;
+    bit<9>  egressPort;
+}
+```
 
 ## Tables
 

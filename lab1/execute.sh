@@ -10,4 +10,10 @@ cp $@ mystery.stf
 /p4c/build/run-bmv2-test.py \
     /p4c \
     mystery.p4
+if [ $? -eq 0 ]
+then
+   echo "[\033[0;32m\033[0;1mPassed\033[0m]"
+else
+   echo "[\033[0;31m\033[0;1mFailed\033[0m]"    
+fi
 rm mystery.stf

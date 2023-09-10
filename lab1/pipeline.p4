@@ -210,7 +210,7 @@ control MyIngress (
     apply {
         // By default, the packet is dropped. 
         mark_to_drop(standard_metadata);
-        validate.apply(headers, metadata, standard_metadata)
+        validate.apply(headers, metadata, standard_metadata);
         // TODO: implement the rest of the pipeline, by invoking the
         // above controls, threading the same arguments through.
     }

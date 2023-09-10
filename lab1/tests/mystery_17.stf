@@ -1,0 +1,39 @@
+# p4testgen seed: 99999
+# Date generated: 2023-09-10-11:39:09.538
+# Current statement coverage: 0.91
+# Traces
+# [Parser] MyParser
+# [State] start
+# [ExtractSuccess] headers.ethernet@0 | Condition: |*packetLen_bits(bit<32>)| >= 112; | Extract Size: 112 -> headers.ethernet.dstAddr = 0x0000_0000_0000 | headers.ethernet.srcAddr = 0x0000_0000_0000 | headers.ethernet.etherType = 0x86DD
+# [State] parseIpv6
+# [ExtractSuccess] headers.ipv6@112 | Condition: |*packetLen_bits(bit<32>)| >= 304; | Extract Size: 192 -> headers.ipv6.version = 0x0 | headers.ipv6.dscp = 0x00 | headers.ipv6.ecn = 0x0 | headers.ipv6.flowLabel = 0x0000_0000 | headers.ipv6.payloadLength = 0x0000 | headers.ipv6.nextHeader = 0x04 | headers.ipv6.hopLimit = 0x00 | headers.ipv6.srcAddr = 0x0000_0000_0000_0000 | headers.ipv6.dstAddr = 0x0000_0000_0000_0000
+# [State] parseInnerIpv4
+# [ExtractSuccess] headers.innerIpv4@304 | Condition: |*packetLen_bits(bit<32>)| >= 464; | Extract Size: 160 -> headers.innerIpv4.version = 0x0 | headers.innerIpv4.ihl = 0x0 | headers.innerIpv4.diffserv = 0x00 | headers.innerIpv4.totalLen = 0x0000 | headers.innerIpv4.identification = 0x0000 | headers.innerIpv4.flags = 0x0 | headers.innerIpv4.fragOffset = 0x0000 | headers.innerIpv4.ttl = 0x00 | headers.innerIpv4.protocol = 0x06 | headers.innerIpv4.hdrChecksum = 0x0000 | headers.innerIpv4.srcAddr = 0x0000_0000 | headers.innerIpv4.dstAddr = 0x0000_0000
+# [State] parseTcp
+# [ExtractFailure] headers.tcp@464 | Condition: !(|*packetLen_bits(bit<32>)| >= 624); | Extract Size: 160
+# [Control MyVerifyChecksum start]
+# [Control MyIngress start]
+# [mark_to_drop executed.]
+# [Table Branch: MyIngress.validate.validate | Key(s): |bmv2_ingress_port(bit<9>)|, |pktvar_2(bit<16>)|, TaintedExpression(bit<12>), TaintedExpression(bit<16>), (bit<1>)0;, (bit<1>)0;, (bit<1>)1;, (bit<1>)1;| Chosen action: NoAction]
+# [If Statement]: false -> 0; -> false
+# [Internal If Statement]: 0 != 0; -> 0 != 0; -> false
+# [Control MyEgress start]
+# [Control MyUpdateChecksum start]
+# [Control MyDeparser start]
+# [Emit] headers.ethernet -> headers.ethernet.dstAddr = 0x0000_0000_0000 | headers.ethernet.srcAddr = 0x0000_0000_0000 | headers.ethernet.etherType = 0x86DD
+# [Invalid emit: headers.vlan]
+# [Invalid emit: headers.ipv4]
+# [Emit] headers.ipv6 -> headers.ipv6.version = 0x0 | headers.ipv6.dscp = 0x00 | headers.ipv6.ecn = 0x0 | headers.ipv6.flowLabel = 0x0000_0000 | headers.ipv6.payloadLength = 0x0000 | headers.ipv6.nextHeader = 0x04 | headers.ipv6.hopLimit = 0x00 | headers.ipv6.srcAddr = 0x0000_0000_0000_0000 | headers.ipv6.dstAddr = 0x0000_0000_0000_0000
+# [Emit] headers.innerIpv4 -> headers.innerIpv4.version = 0x0 | headers.innerIpv4.ihl = 0x0 | headers.innerIpv4.diffserv = 0x00 | headers.innerIpv4.totalLen = 0x0000 | headers.innerIpv4.identification = 0x0000 | headers.innerIpv4.flags = 0x0 | headers.innerIpv4.fragOffset = 0x0000 | headers.innerIpv4.ttl = 0x00 | headers.innerIpv4.protocol = 0x06 | headers.innerIpv4.hdrChecksum = 0x0000 | headers.innerIpv4.srcAddr = 0x0000_0000 | headers.innerIpv4.dstAddr = 0x0000_0000
+# [Invalid emit: headers.tcp]
+# [Invalid emit: headers.udp]
+# [Prepending the emit buffer to the program packet]
+# [Internal If Statement]: 511 == 511; -> 511 == 511; -> true
+# [Packet marked dropped]
+
+# Table MyIngress.validate.validate
+add "MyIngress.validate.validate" 1 "headers.ethernet.etherType":0x86DD "headers.innerIpv4.$valid$":0x1 "headers.ipv4.$valid$":0x0 "headers.ipv6.$valid$":0x1 "headers.vlan.$valid$":0x0 "headers.vlan.etherType":0b**************** "headers.vlan.vlanId":0b************ "standard_metadata.ingress_port":0x0EC "NoAction"()
+
+
+packet 236 00000000000000000000000086DD000000000000040000000000000000000000000000000000000000000000000000060000000000000000000016C4149753FE39F1
+

@@ -1,7 +1,7 @@
 all: run
 
 run: build
-	sudo python3 run_exercise.py -t topology.json -b simple_switch_grpc
+	sudo PYTHONPATH=$PYTHONPATH:util python3 run_exercise.py -t topology.json -b simple_switch_grpc
 
 stop:
 	sudo mn -c

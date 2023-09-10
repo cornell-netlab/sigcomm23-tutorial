@@ -27,7 +27,7 @@ assembled a Docker container with all three packages.
 
 4. Within the container, fetch the latest version of this repository:
 ```
-root@add3d1327646:/mystery# ./go.sh
+root@add3d1327646:/# ./go.sh
 ```
 
 For further instructions, see the README file in each lab directory.

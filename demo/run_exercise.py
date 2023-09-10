@@ -300,7 +300,7 @@ class ExerciseRunner:
         for i in range(4):
             hosts.append(self.net.get("h%d" % (i + 1)))
         response = hosts[0].cmd("ping -c 1 10.0.2.2")
-        print('Test result\n{response}\n')                    
+        print(f'Test result\n{response}\n')                    
 
 def get_args():
     cwd = os.getcwd()

@@ -1,24 +1,3 @@
-#!/usr/bin/env python3
-# Copyright 2013-present Barefoot Networks, Inc.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#    http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
-# Adapted by Robert MacDavid (macdavid@cs.princeton.edu) from scripts found in
-# the p4app repository (https://github.com/p4lang/p4app)
-#
-# We encourage you to dissect this script to better understand the BMv2/Mininet
-# environment used by the P4 tutorial.
-#
 import argparse
 import json
 import os
@@ -207,13 +186,6 @@ class ExerciseRunner:
         
         # stop right after the CLI is exited
         self.net.stop()
-
-    def do_test(self):
-        hosts = []
-        for i in range(4):
-            hosts.append(self.net.get("h%d" % (i + 1)))
-        response = hosts[0].cmd("ping -c 1 10.0.2.2")
-        print('Test result\n{response}\n')
             
     def parse_links(self, unparsed_links):
         """ Given a list of links descriptions of the form [node1, node2, latency, bandwidth]
@@ -322,49 +294,13 @@ class ExerciseRunner:
             if "commands" in host_info:
                 for cmd in host_info["commands"]:
                     h.cmd(cmd)
-
-
-    def do_net_cli(self):
-        """ Starts up the mininet CLI and prints some helpful output.
-
-            Assumes:
-                - A mininet instance is stored as self.net and self.net.start() has
-                  been called.
-        """
-        for s in self.net.switches:
-            s.describe()
-        for h in self.net.hosts:
-            h.describe()
-        self.logger("Starting mininet CLI")
-        # Generate a message that will be printed by the Mininet CLI to make
-        # interacting with the simple switch a little easier.
-        print('')
-        print('======================================================================')
-        print('Welcome to the BMV2 Mininet CLI!')
-        print('======================================================================')
-        print('Your P4 program is installed into the BMV2 software switch')
-        print('and your initial runtime configuration is loaded. You can interact')
-        print('with the network using the mininet CLI below.')
-        print('')
-        if self.switch_json:
-            print('To inspect or change the switch configuration, connect to')
-            print('its CLI from your host operating system using this command:')
-            print('  simple_switch_CLI --thrift-port <switch thrift port>')
-            print('')
-        print('To view a switch log, run this command from your host OS:')
-        print('  tail -f %s/<switchname>.log' %  self.log_dir)
-        print('')
-        print('To view the switch output pcap, check the pcap files in %s:' % self.pcap_dir)
-        print(' for example run:  sudo tcpdump -xxx -r s1-eth1.pcap')
-        print('')
-        if 'grpc' in self.bmv2_exe:
-            print('To view the P4Runtime requests sent to the switch, check the')
-            print('corresponding txt file in %s:' % self.log_dir)
-            print(' for example run:  cat %s/s1-p4runtime-requests.txt' % self.log_dir)
-            print('')
-
-        CLI(self.net)
-
+    # Run Test!
+    def do_test(self):
+        hosts = []
+        for i in range(4):
+            hosts.append(self.net.get("h%d" % (i + 1)))
+        response = hosts[0].cmd("ping -c 1 10.0.2.2")
+        print('Test result\n{response}\n')                    
 
 def get_args():
     cwd = os.getcwd()
@@ -384,9 +320,6 @@ def get_args():
 
 
 if __name__ == '__main__':
-    # from mininet.log import setLogLevel
-    # setLogLevel("info")
-
     args = get_args()
     exercise = ExerciseRunner(args.topo, args.log_dir, args.pcap_dir,
                               args.switch_json, args.behavioral_exe, args.quiet)

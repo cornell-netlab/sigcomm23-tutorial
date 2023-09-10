@@ -2,7 +2,7 @@
 
 if [ $# -eq 0 ]
 then
-    echo "usage: execute.sh <stf>"
+    echo "usage: execute-reference.sh <stf>"
     exit 1
 fi
 

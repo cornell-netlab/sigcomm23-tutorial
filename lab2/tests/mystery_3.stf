@@ -1,0 +1,40 @@
+# p4testgen seed: 7
+# Date generated: 2023-09-10-00:20:05.671
+# Current statement coverage: 0.77
+# Traces
+# [Parser] MyParser
+# [State] start
+# [ExtractSuccess] headers.ethernet@0 | Condition: |*packetLen_bits(bit<32>)| >= 112; | Extract Size: 112 -> headers.ethernet.dstAddr = 0x0000_0000_0000 | headers.ethernet.srcAddr = 0x0000_0000_0000 | headers.ethernet.etherType = 0x8100
+# [State] parseVlan
+# [ExtractSuccess] headers.vlan@112 | Condition: |*packetLen_bits(bit<32>)| >= 144; | Extract Size: 32 -> headers.vlan.pcp = 0x0 | headers.vlan.dei = 0x0 | headers.vlan.vlanId = 0x77F | headers.vlan.etherType = 0x0800
+# [State] parseIpv4
+# [ExtractSuccess] headers.ipv4@144 | Condition: |*packetLen_bits(bit<32>)| >= 304; | Extract Size: 160 -> headers.ipv4.version = 0x0 | headers.ipv4.ihl = 0x0 | headers.ipv4.diffserv = 0x00 | headers.ipv4.totalLen = 0x0000 | headers.ipv4.identification = 0x0000 | headers.ipv4.flags = 0x0 | headers.ipv4.fragOffset = 0x0000 | headers.ipv4.ttl = 0x00 | headers.ipv4.protocol = 0x06 | headers.ipv4.hdrChecksum = 0x136D | headers.ipv4.srcAddr = 0x0000_0000 | headers.ipv4.dstAddr = 0x0000_0000
+# [State] parseTcp
+# [ExtractSuccess] headers.tcp@304 | Condition: |*packetLen_bits(bit<32>)| >= 464; | Extract Size: 160 -> headers.tcp.srcPort = 0x0000 | headers.tcp.dstPort = 0x0000 | headers.tcp.seqNo = 0x0000_0000 | headers.tcp.ackNo = 0x0000_0000 | headers.tcp.dataOffset = 0x0 | headers.tcp.res = 0x0 | headers.tcp.flags = 0x00 | headers.tcp.window = 0x0000 | headers.tcp.checksum = 0x0000 | headers.tcp.urgentPtr = 0x0000
+# [State] accept
+# [Control MyVerifyChecksum start]
+# [Control MyIngress start]
+# [mark_to_drop executed.]
+# [Table Branch: MyIngress.validate.validate | Key(s): |bmv2_ingress_port(bit<9>)|, |pktvar_2(bit<16>)|, |pktvar_5(bit<12>)|, |pktvar_6(bit<16>)|, (bit<1>)1;, (bit<1>)1;, (bit<1>)0;, (bit<1>)0;| Chosen action: NoAction]
+# [If Statement]: false -> 0; -> false
+# [Internal If Statement]: 0 != 0; -> 0 != 0; -> false
+# [Control MyEgress start]
+# [Control MyUpdateChecksum start]
+# [Control MyDeparser start]
+# [Emit] headers.ethernet -> headers.ethernet.dstAddr = 0x0000_0000_0000 | headers.ethernet.srcAddr = 0x0000_0000_0000 | headers.ethernet.etherType = 0x8100
+# [Emit] headers.vlan -> headers.vlan.pcp = 0x0 | headers.vlan.dei = 0x0 | headers.vlan.vlanId = 0x77F | headers.vlan.etherType = 0x0800
+# [Emit] headers.ipv4 -> headers.ipv4.version = 0x0 | headers.ipv4.ihl = 0x0 | headers.ipv4.diffserv = 0x00 | headers.ipv4.totalLen = 0x0000 | headers.ipv4.identification = 0x0000 | headers.ipv4.flags = 0x0 | headers.ipv4.fragOffset = 0x0000 | headers.ipv4.ttl = 0x00 | headers.ipv4.protocol = 0x06 | headers.ipv4.hdrChecksum = 0x0000 | headers.ipv4.srcAddr = 0x0000_0000 | headers.ipv4.dstAddr = 0x0000_0000
+# [Invalid emit: headers.ipv6]
+# [Invalid emit: headers.innerIpv4]
+# [Emit] headers.tcp -> headers.tcp.srcPort = 0x0000 | headers.tcp.dstPort = 0x0000 | headers.tcp.seqNo = 0x0000_0000 | headers.tcp.ackNo = 0x0000_0000 | headers.tcp.dataOffset = 0x0 | headers.tcp.res = 0x0 | headers.tcp.flags = 0x00 | headers.tcp.window = 0x0000 | headers.tcp.checksum = 0x0000 | headers.tcp.urgentPtr = 0x0000
+# [Invalid emit: headers.udp]
+# [Prepending the emit buffer to the program packet]
+# [Internal If Statement]: 511 == 511; -> 511 == 511; -> true
+# [Packet marked dropped]
+
+# Table MyIngress.validate.validate
+add "MyIngress.validate.validate" 1 "headers.ethernet.etherType":0x8100 "headers.innerIpv4.$valid$":0x0 "headers.ipv4.$valid$":0x1 "headers.ipv6.$valid$":0x0 "headers.vlan.$valid$":0x1 "headers.vlan.etherType":0b****1***0******0 "headers.vlan.vlanId":0b011*1*0010*0 "standard_metadata.ingress_port":0x031 "NoAction"()
+
+
+packet 49 00000000000000000000000081000688080000000000000000000006FFF90000000000000000000000000000000000000000000000000000000034E50391F08E703CF5D7FE4E1E6CF6CEBDB25D729633306DD4D7BC1361094C913309B63E0ED946AA13CC866B1ED7462109EC19BC5E698305958C11F7A91816D0DB44A3887F19191EC359265362115F2D599D4BD1BA0F4F6AE136DBC6DEC63B0600FDDCB0F08FFC6E8C202AF1D68E3669CC7B075EE15865E9E48D13288E4D1EF8A9F9BEEE2F9430B7B144F9F4ABA886AC2D823EA751A7809F1A3B6C7E900090393EBE52F35363588D6F988052C9B736E7C55F7D4BCBFAEB4ADC57FFC3702710C4A70A3CCAC5D332C215976A5D452736124F5B803DEB136B6B5B6FC2C80B70673F96CAD2DA9C699A20CE9319E6589C9AD8185D51BE8AF25CF9E003DC7386B4D179039042480465998E561180812F337DB2713038589DDF2955F7A2C7E4F9E944614ACF0A2A35184E0D569A1C38D47163373E0DED4F94B732C1FE1967080963FA49D20F2F3657B5221FE90CE0896E2B9349B39133EC7B8D858F70132DAC0F5029D1BDE1F992BBB57D109B9F14951A0AB13E6BE6919BFF737257D45F5CF86A67B198CAD2BA068DC2D5B69117AF41A54803E3A89697004790D7C1057BD0AABCC862A67169124EE64A88019209B2C754855A5C12461E29BE7890C9C66E0C09D76EBBA6BEDCF8B6F27CA71DE8405C70C6B102671CC5ECEC67DABCC5FEF9C73451BBE420F4EF99D3EF56E65F138E2B3A8E688A21243A09278DCCEC1FD10E93F4DA34832ED1040D62C209853FF30BB798DD05E61611819B42EDC2452FFFAA3702D72FEB01AD1E5E0503A51596450CBB064655107C9245255C286CF40C865D93557C6309042EEBE226AA0BFDF95019F509D0D23F58AB9F3360DDD2F68BACA93FE722A9ACF273D31AFDD1F525FB55FC709E0C304955D2A019B4107E3D5DCF4D40995AA58092E0146622FB9DF9DFB1647391A201F9359DC618D4109D72DB2359D2A2AC9DC0A4311904797F7DCA8BD2D3C554DB84606C1694582840124AE45FA259
+

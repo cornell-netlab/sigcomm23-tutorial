@@ -1,0 +1,52 @@
+# p4testgen seed: 7
+# Date generated: 2023-09-10-00:20:07.949
+# Current statement coverage: 0.86
+# Traces
+# [Parser] MyParser
+# [State] start
+# [ExtractSuccess] headers.ethernet@0 | Condition: |*packetLen_bits(bit<32>)| >= 112; | Extract Size: 112 -> headers.ethernet.dstAddr = 0xBA6A_8D00_D486 | headers.ethernet.srcAddr = 0x9D8B_69C9_6DAA | headers.ethernet.etherType = 0x86DD
+# [State] parseIpv6
+# [ExtractSuccess] headers.ipv6@112 | Condition: |*packetLen_bits(bit<32>)| >= 304; | Extract Size: 192 -> headers.ipv6.version = 0x0 | headers.ipv6.dscp = 0x00 | headers.ipv6.ecn = 0x0 | headers.ipv6.flowLabel = 0x0000_0000 | headers.ipv6.payloadLength = 0x0000 | headers.ipv6.nextHeader = 0x04 | headers.ipv6.hopLimit = 0xF7 | headers.ipv6.srcAddr = 0xAFFB_CD6B_FBDF_F6FC | headers.ipv6.dstAddr = 0x9FED_66F5_97BF_E7EF
+# [State] parseInnerIpv4
+# [ExtractFailure] headers.innerIpv4@304 | Condition: !(|*packetLen_bits(bit<32>)| >= 464); | Extract Size: 160
+# [Control MyVerifyChecksum start]
+# [Control MyIngress start]
+# [mark_to_drop executed.]
+# [Table Branch: MyIngress.validate.validate | Key(s): |bmv2_ingress_port(bit<9>)|, |pktvar_2(bit<16>)|, TaintedExpression(bit<12>), TaintedExpression(bit<16>), (bit<1>)0;, (bit<1>)0;, (bit<1>)1;, (bit<1>)0;| Chosen action: MyIngress.validate.setValidated]
+# [Assume: applying condition: !0;]
+# [If Statement]: true -> 1; -> true
+# [Internal If Statement]: 0; -> 0; -> false
+# [Internal If Statement]: 1; -> 1; -> true
+# [Table Branch: MyIngress.route.ipv6Route Choosing default action: NoAction_3/NoAction;]
+# [If Statement]: headers.ipv6.nextHeader == 0x04 -> |pktvar_8(bit<8>)| == 4; -> true
+# [Table Branch: MyIngress.route.decap | Key(s): |pktvar_11(bit<64>)|| Chosen action: MyIngress.route.setDecap]
+# [Table Branch: MyIngress.acl.acl | Key(s): |bmv2_ingress_port(bit<9>)|, 0, 0, |pktvar_1(bit<48>)|, |pktvar_0(bit<48>)|, |pktvar_2(bit<16>)|, TaintedExpression(bit<32>), TaintedExpression(bit<32>), TaintedExpression(bit<8>), |pktvar_10(bit<64>)|, |pktvar_11(bit<64>)|, |pktvar_9(bit<8>)|, |pktvar_8(bit<8>)|, 0, 0| Chosen action: MyIngress.acl.deny]
+# [If Statement]: false -> 0; -> false
+# [If Statement]: false -> 0; -> false
+# [Internal If Statement]: 0 != 0; -> 0 != 0; -> false
+# [Control MyEgress start]
+# [Control MyUpdateChecksum start]
+# [Control MyDeparser start]
+# [Emit] headers.ethernet -> headers.ethernet.dstAddr = 0xBA6A_8D00_D486 | headers.ethernet.srcAddr = 0x9D8B_69C9_6DAA | headers.ethernet.etherType = 0x86DD
+# [Invalid emit: headers.vlan]
+# [Invalid emit: headers.ipv4]
+# [Emit] headers.ipv6 -> headers.ipv6.version = 0x0 | headers.ipv6.dscp = 0x00 | headers.ipv6.ecn = 0x0 | headers.ipv6.flowLabel = 0x0000_0000 | headers.ipv6.payloadLength = 0x0000 | headers.ipv6.nextHeader = 0x04 | headers.ipv6.hopLimit = 0xF7 | headers.ipv6.srcAddr = 0xAFFB_CD6B_FBDF_F6FC | headers.ipv6.dstAddr = 0x9FED_66F5_97BF_E7EF
+# [Invalid emit: headers.innerIpv4]
+# [Invalid emit: headers.tcp]
+# [Invalid emit: headers.udp]
+# [Prepending the emit buffer to the program packet]
+# [Internal If Statement]: 511 == 511; -> 511 == 511; -> true
+# [Packet marked dropped]
+
+# Table MyIngress.validate.validate
+add "MyIngress.validate.validate" 1 "headers.ethernet.etherType":0x86DD "headers.innerIpv4.$valid$":0x0 "headers.ipv4.$valid$":0x0 "headers.ipv6.$valid$":0x1 "headers.vlan.$valid$":0x0 "headers.vlan.etherType":0b**************** "headers.vlan.vlanId":0b************ "standard_metadata.ingress_port":0x0E9 "MyIngress.validate.setValidated"()
+
+# Table MyIngress.route.decap
+add "MyIngress.route.decap" 1 "headers.ipv6.dstAddr":0b*0**111*********01***1*****10*011*****1*10*1*11111**0***11**1*** "MyIngress.route.setDecap"()
+
+# Table MyIngress.acl.acl
+add "MyIngress.acl.acl" 1 "headers.ethernet.dstAddr":0xBA6A8D00D486 "headers.ethernet.etherType":0x86DD "headers.ethernet.srcAddr":0x9D8B69C96DAA "headers.ipv4.dstAddr":0b******************************** "headers.ipv4.srcAddr":0b******************************** "headers.ipv4.ttl":0b******** "headers.ipv6.dstAddr":0b1*011*11111011***110*1*01*1*0**1100**1*11**11111111*0*1*111*11*1 "headers.ipv6.hopLimit":0b1111*111 "headers.ipv6.srcAddr":0b101*11*11*1*1*1111*0*10**11010*1111*101111*1111*1111*11**11111*0 "metadata.egressPort":0b00*00**00 "metadata.l3Protocol":0b00***1** "metadata.l4DstPort":0b000*00*00******0 "metadata.l4SrcPort":0b***0*0***00**0*0 "metadata.vlan":0b*000*00*0*00 "standard_metadata.ingress_port":0b0*1101**1 "MyIngress.acl.deny"()
+
+
+packet 233 BA6A8D00D4869D8B69C96DAA86DD00000000000004F7AFFBCD6BFBDFF6FC9FED66F597BFE7EF216C0E71AC444DB40677
+

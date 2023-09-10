@@ -299,7 +299,7 @@ class ExerciseRunner:
         response = self.net.get("h1").cmd("ping -c 1 10.0.2.2")
         test = "h1 -> h2 connectivity"
         if "received" in response:
-            Print(f'Testing {description}[\033[32m\033[1mPassed\033[m]\n{response}\n')
+            print(f'Testing {description}[\033[32m\033[1mPassed\033[m]\n{response}\n')
         else:
             print(f'Testing {description}[\033[31m\033[1mFailed\033[m]\n{response}\n')
 

@@ -296,15 +296,12 @@ class ExerciseRunner:
                     h.cmd(cmd)
     # Run Test!
     def do_test(self):
-        hosts = []
-        for i in range(4):
-            hosts.append(self.net.get("h%d" % (i + 1)))
-        response = hosts[0].cmd("ping -c 1 10.0.2.2")
+        response = self.net.get("h1").cmd("ping -c 1 10.0.2.2")
+        test = "h1 -> h2 connectivity"
         if "received" in response:
-            Print(f'[\033[32m\033[1mPassed\033[m]\n{response}\n')
+            Print(f'Testing {description}[\033[32m\033[1mPassed\033[m]\n{response}\n')
         else:
-            print(f'[\033[31m\033[1mFailed\033[m]\n{response}\n')
-
+            print(f'Testing {description}[\033[31m\033[1mFailed\033[m]\n{response}\n')
 
 def get_args():
     cwd = os.getcwd()

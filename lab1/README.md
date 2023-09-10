@@ -18,7 +18,7 @@ description of a pipeline specified informally.
 The top-level pipeline is implemented in terms of several smaller
 blocks, which are composed in sequence:
 
-[!pipeline](../images/pipeline.png)
+![pipeline](../images/pipeline.png)
 
 ## Headers
 

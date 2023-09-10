@@ -1,0 +1,64 @@
+# p4testgen seed: 101010
+# Date generated: 2023-09-10-11:06:51.782
+# Current statement coverage: 1
+# Traces
+# [Parser] MyParser
+# [State] start
+# [ExtractSuccess] headers.ethernet@0 | Condition: |*packetLen_bits(bit<32>)| >= 112; | Extract Size: 112 -> headers.ethernet.dstAddr = 0x8214_67B9_CCFA | headers.ethernet.srcAddr = 0xFDFD_5342_4B6C | headers.ethernet.etherType = 0x86DD
+# [State] parseIpv6
+# [ExtractSuccess] headers.ipv6@112 | Condition: |*packetLen_bits(bit<32>)| >= 304; | Extract Size: 192 -> headers.ipv6.version = 0x0 | headers.ipv6.dscp = 0x00 | headers.ipv6.ecn = 0x0 | headers.ipv6.flowLabel = 0x0000_0000 | headers.ipv6.payloadLength = 0x0000 | headers.ipv6.nextHeader = 0x04 | headers.ipv6.hopLimit = 0x47 | headers.ipv6.srcAddr = 0x3DED_5F0F_6FFF_8FEF | headers.ipv6.dstAddr = 0xF73D_FD4E_F1A1_9C70
+# [State] parseInnerIpv4
+# [ExtractSuccess] headers.innerIpv4@304 | Condition: |*packetLen_bits(bit<32>)| >= 464; | Extract Size: 160 -> headers.innerIpv4.version = 0x0 | headers.innerIpv4.ihl = 0x0 | headers.innerIpv4.diffserv = 0x00 | headers.innerIpv4.totalLen = 0x0000 | headers.innerIpv4.identification = 0x0000 | headers.innerIpv4.flags = 0x0 | headers.innerIpv4.fragOffset = 0x0000 | headers.innerIpv4.ttl = 0x00 | headers.innerIpv4.protocol = 0x04 | headers.innerIpv4.hdrChecksum = 0x0000 | headers.innerIpv4.srcAddr = 0x0000_0000 | headers.innerIpv4.dstAddr = 0x0000_0000
+# [State] accept
+# [Control MyVerifyChecksum start]
+# [Control MyIngress start]
+# [mark_to_drop executed.]
+# [Table Branch: MyIngress.validate.validate | Key(s): |bmv2_ingress_port(bit<9>)|, |pktvar_2(bit<16>)|, TaintedExpression(bit<12>), TaintedExpression(bit<16>), (bit<1>)0;, (bit<1>)0;, (bit<1>)1;, (bit<1>)1;| Chosen action: MyIngress.validate.setValidated]
+# [If Statement]: true -> 1; -> true
+# [Internal If Statement]: 0; -> 0; -> false
+# [Internal If Statement]: 1; -> 1; -> true
+# [Table Branch: MyIngress.route.ipv6Route | Key(s): |pktvar_11(bit<64>)|| Chosen action: MyIngress.route.setForwarding]
+# [If Statement]: metadata.l3Protocol == 4 -> |pktvar_20(bit<8>)| == 4; -> true
+# [Table Branch: MyIngress.route.decap | Key(s): |pktvar_11(bit<64>)|| Chosen action: NoAction]
+# [Table Branch: MyIngress.acl.acl | Key(s): |bmv2_ingress_port(bit<9>)|, |MyIngress.route.ipv6Route_arg_MyIngress.route.setForwarding1(bit<9>)|, 0, |pktvar_1(bit<48>)|, |pktvar_0(bit<48>)|, |pktvar_2(bit<16>)|, TaintedExpression(bit<32>), TaintedExpression(bit<32>), TaintedExpression(bit<8>), |pktvar_10(bit<64>)|, |pktvar_11(bit<64>)|, |pktvar_9(bit<8>)|, |pktvar_20(bit<8>)|, 0, 0| Chosen action: MyIngress.acl.allow]
+# [If Statement]: true -> 1; -> true
+# [If Statement]: false -> 0; -> false
+# [If Statement]: true -> 1; -> true
+# [Internal If Statement]: 0; -> 0; -> false
+# [Internal If Statement]: 1; -> 1; -> true
+# [If Statement]: headers.ipv6.hopLimit == 0 -> |pktvar_9(bit<8>)| + 255 == 0; -> false
+# [If Statement]: true -> 1; -> true
+# [Table Branch: MyIngress.forward.tag | Key(s): |bmv2_ingress_port(bit<9>)|| Chosen action: MyIngress.forward.setTag]
+# [Internal If Statement]: 0 != 0; -> 0 != 0; -> false
+# [Control MyEgress start]
+# [Control MyUpdateChecksum start]
+# [Control MyDeparser start]
+# [Emit] headers.ethernet -> headers.ethernet.dstAddr = 0x0000_0000_0000 | headers.ethernet.srcAddr = 0xFDFD_5342_4B6C | headers.ethernet.etherType = 0x8100
+# [Emit] headers.vlan -> headers.vlan.pcp = 0x0 | headers.vlan.dei = 0x0 | headers.vlan.vlanId = 0x000 | headers.vlan.etherType = 0x86DD
+# [Invalid emit: headers.ipv4]
+# [Emit] headers.ipv6 -> headers.ipv6.version = 0x0 | headers.ipv6.dscp = 0x00 | headers.ipv6.ecn = 0x0 | headers.ipv6.flowLabel = 0x0000_0000 | headers.ipv6.payloadLength = 0x0000 | headers.ipv6.nextHeader = 0x04 | headers.ipv6.hopLimit = 0x46 | headers.ipv6.srcAddr = 0x3DED_5F0F_6FFF_8FEF | headers.ipv6.dstAddr = 0xF73D_FD4E_F1A1_9C70
+# [Emit] headers.innerIpv4 -> headers.innerIpv4.version = 0x0 | headers.innerIpv4.ihl = 0x0 | headers.innerIpv4.diffserv = 0x00 | headers.innerIpv4.totalLen = 0x0000 | headers.innerIpv4.identification = 0x0000 | headers.innerIpv4.flags = 0x0 | headers.innerIpv4.fragOffset = 0x0000 | headers.innerIpv4.ttl = 0x00 | headers.innerIpv4.protocol = 0x04 | headers.innerIpv4.hdrChecksum = 0x0000 | headers.innerIpv4.srcAddr = 0x0000_0000 | headers.innerIpv4.dstAddr = 0x0000_0000
+# [Invalid emit: headers.tcp]
+# [Invalid emit: headers.udp]
+# [Prepending the emit buffer to the program packet]
+# [Internal If Statement]: 511 == |MyIngress.route.ipv6Route_arg_MyIngress.route.setForwarding1(bit<9>)|; -> 511 == |MyIngress.route.ipv6Route_arg_MyIngress.route.setForwarding1(bit<9>)|; -> true
+# [Packet marked dropped]
+
+# Table MyIngress.validate.validate
+add "MyIngress.validate.validate" 1 "headers.ethernet.etherType":0x86DD "headers.innerIpv4.$valid$":0x1 "headers.ipv4.$valid$":0x0 "headers.ipv6.$valid$":0x1 "headers.vlan.$valid$":0x0 "headers.vlan.etherType":0b**************** "headers.vlan.vlanId":0b************ "standard_metadata.ingress_port":0x04A "MyIngress.validate.setValidated"()
+
+# Table MyIngress.route.ipv6Route
+add "MyIngress.route.ipv6Route" 1 "headers.ipv6.dstAddr":0b*1***1****111*011*1*1*****0*1*1*1*1**0*1*01*00**1**1***0**1100** "MyIngress.route.setForwarding"("dstAddr":0x000000000000,"egressPort":0x1FF)
+
+# Table MyIngress.route.decap
+add "MyIngress.route.decap" 1 "headers.ipv6.dstAddr":0b***1*11**0111**1*****10*01*01*1*11*10**11*1**00****111******0000 "NoAction"()
+
+# Table MyIngress.acl.acl
+add "MyIngress.acl.acl" 1 "headers.ethernet.dstAddr":0x821467B9CCFA "headers.ethernet.etherType":0x86DD "headers.ethernet.srcAddr":0xFDFD53424B6C "headers.ipv4.dstAddr":0b******************************** "headers.ipv4.srcAddr":0b******************************** "headers.ipv4.ttl":0b******** "headers.ipv6.dstAddr":0b111*01*10*1111**111111*1010*1**01*1***0110100**11**111**0111*0*0 "headers.ipv6.hopLimit":0b01*001** "headers.ipv6.srcAddr":0b***1*1*11*1011*10**11111000**1*1011011*11111111*****111**11*1111 "metadata.egressPort":0b***11***1 "metadata.l3Protocol":0b***0*1** "metadata.l4DstPort":0b**0000000***00** "metadata.l4SrcPort":0b*0**00*000**00** "metadata.vlan":0b0*00*0*0**0* "standard_metadata.ingress_port":0b0**0****0 "MyIngress.acl.allow"()
+
+# Table MyIngress.forward.tag
+add "MyIngress.forward.tag" "standard_metadata.ingress_port":0x04A "MyIngress.forward.setTag"("vlanId":0x000)
+
+
+packet 74 821467B9CCFAFDFD53424B6C86DD00000000000004473DED5F0F6FFF8FEFF73DFD4EF1A19C7000000000000000000004000000000000000000002F158C057F574B77A3EF9416C3FF548C160D1B8D85040DD4E3E07DAD32F112105E2D18E2DAFCDDAF79254CCF5C7C70798D9A53FE704993C4ABB8A4E5F140E79E0E6FAB017D9A3A4E249A1BE120ECA1C57A5162207D9EA0F261B038FB368C1FA218A774C1F01174952D90E5E82EE50E81BA02EF8B4E6E68069258CFCC25C961B65E32B6375828E052A70BFDB1C9B7E4841F8AE5B2901EDED907FF9E901DD80E36E5EEB1B1C2912E0FBD792095410E1117B995C62F54159417974F47977D530754265043E2FF1BACCB13B94510C335FA1B16652593B5541918749D839A76911BCDAFC77A8CDF782B77D513AAD2FA979C12F8F4EC2C7195CE7CD161ED9C0EFAE681DF0257E7F092364A08A793F3AA28A128760A5E5DC66930385B47F561911EEF7A2ED308F5C019B6F7ADB751ABD6A386BBA44F6A0EFC39789804F606003C2AF8024F2B722723B294D9FACF5835A7A77DB434BD17A15F1E9758334537084487A88C2475A54EF864A574209C20A49E2408D2656C5CCC0B449589756380FF8B3C9B182F7A57CE3421A5D522059D8BB3E2C1EA8EA8E633694FC1D8733CACD65155B31D710B6CE28C37610F9A8E0BF7067A8D1A999DFEC9D6AB068399A8B406400C6102E4483DCBDE6BDCA2907258D4AFB746E7080C19836A99A996501BD186B773D83336AB002E12AD5FFCD0F0089E9273548DA79E31A8C5105089E711C393E1EEFE0A00DE5AFA61037C891750B521A645FDFE3481234CDC3EDFF9DF214CCB9DDA72796C7EF1CA62A5415D99CFD7A9A1C2194AAFF0F55BEF4AC8EF9586648E69412C16E765177A9B8B98A07485C7110B6D2CE014F3972A2AD382C03A66444948E50F6642D02230CBAA53EF34C762F8EF4A301BBD0E6DFAABC4D2CC43886C78955C017FF89210812B51271208C3F4A13ADA1B15533A4ED18D453EF453BAF821A7B268209F81C5F86903218AF8E87708DC47AF7C5B122C7E5533874616E1C0C9C4DA93B614EEE1C843E9A2D7D4B6D1311686EB02A7D1F1997DD4CB3EE06E79517B5E05EAA1F486FD70C1FEE4AAFA6EA2C00C0A6C7DDBAB56C70DA6619678E81D404EEB031F9C82A6AA48668AF60FCAB075C433DC77E60DC5CE19D30563821E919D65BA19DE40ED0ED008A92952791B0238FEDBE00BB1754AB535602F58F002C861690CC5FB12CC30ABEEA99BDD0C2CE88934930065D333A69BE24FE0709619BE95D9205D9DF1E36511122C14F02910BC02C7BB0D9589AE9FF52AE3213BDC54A6E9B20199F0C9C19F3EB049DC67053797B3BD29293C09FD70FA28ECC2F6052BC0F58B2A87E26B0E465C2EC9E836A2C48FAF3283388E35E9D711A4047D41D967DB4E2FF6A6CACEA8391531E653A68510CB5BAA9B32AD91BDD8A87678DBAE2BE7E9D6D606EDE562C818304673173E5D54BA9AEA49F1A7B8BDB4173F4C3F54318A02C7D501DD7992BB609997880A89C59DEEA62A0DAF0ECAD97BCD9923DED5332E752F955F4DDCAEE349D7177E95E39789D13A41B97253241D4FC0B5BA6681CA7C1EDC6F57393DF098449931F3F377937A6FD191359AAD8580D6C299ED2E2CBBC8F7EF04DDFE0B2190BF54059755B20815112B2CA96E64DED7350ED55689B8CE771E0101ADE8D62FF7AA934888EDCEEF3FF95142CAC62E6D347E68A044984FC2C974AD795F4ED5905E975F43280CDA72947A42B89D7838A9402AB9F4996286A1285047C980CBE85DD357421196A3B2BDAB8E3FB2FE4EBA5355E93BCB90D918432D0D5B11DBB45DDB454751610C1249C7753D03F392793208E649CA3FE39E4811A47C5CD33B09AB78607F59F5BE352D779EEAB74FA057320556FE382EE49A75595CF12E22A546AC30926ED8956D97E50981FA0AEDE8D66AA0D074DC8BA6934A19B5CA50AF2C87E391357D6813D3C1051FDAD7DB87F6CED27AEC44E5796E48CE658C4A80FECE961B62183376970D7272F2A7B8D510A860DC4D48C13DEE4841B1ECBD844EC37601C27EFF9CCE465E866A75CE9FB860A0F587D8A2840B1DD8116127E645B6DA21EF50FAAF798B9EF87FE1D2C43AFC31FD70626C79E291C3A2426A7324E941249C1E3DCA76CAC84DBC9ED3A7D58500E94964D9DFECECDB10D90DAB55F3DD74060ED7ADB9D54B5F59A43DE6AB24961808229DFD1FAAEA721F67946CCBB3479FE10E54A90FAE5113320F6FF12C071E1ED0C16EC224F96DB245129422D5FC31455D4AF032EF68104AACBCD328AFB65B1C67149BECBCADD947ED1777E06EA85550BBC0A93F87056D0B112E5B1CB3CD1954D79B51DE8403B46B2E1278B760D91BF3EBFB5B2F0AB3FDD2548B1DCF60B753C37A135AB6D1FCBF77F06D9B109F0B460249ECCF6ED7BA6A64696FFADB4AD76A7EF3E4BB927357ECBEDED5111875EB8B214ACF8A23D6E73E538EDC2ACBA5B68AF6230910D7C6B9025F4943F9D4BD22C35B6553F560E9CE82B72C2D4D8F552D51151C429F836EF3A22DF7EB3E27DFD903154A85120B285ED20E371F848E4E920F20555A599C41BAE3E8338DFB53EBCF1518A560D3A844F732731DF1986D9B4C7A69BB21D64504F66A9F54C041748B4A9CC2517C710359D2914B6E1C15436F0A692610E96ADE5B90D4F73DBC03C10B0194F124022A372E3145B651513713C035A3AFD6CB5D97A3170B43C40014E327B5B8341A7B234E81F0540C9F69CC9F931E92A6C76327D5AE495518E28D1158840B05124B059566752AFD896393453FE1625F826F860D77D7CB3985010CF5159B
+

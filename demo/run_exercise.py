@@ -301,9 +301,10 @@ class ExerciseRunner:
             hosts.append(self.net.get("h%d" % (i + 1)))
         response = hosts[0].cmd("ping -c 1 10.0.2.2")
         if "received" in response:
-            print(f'[\033[1;32m\033[;1mPassed\033[0;0m]\n{response}\n')
+            print(f'[\033[31m\033[1mPassed\033[m]\n{response}\n')
         else:
-            print(f'[\033[1;31m\033[;1mFailed\033[0;0m]\n{response}\n')
+            print(f'[\033[32m\033[1mFailed\033[m]\n{response}\n')
+
 
 def get_args():
     cwd = os.getcwd()
